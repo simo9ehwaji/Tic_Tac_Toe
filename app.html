@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Document</title>
+  <style>
+      html{
+      font-family: system-ui, sans-serif;
+    } 
+     body{
+      display:flex; 
+      flex-direction:column; 
+      align-items: center;
+      width: 360px; 
+      margin:auto; 
+    }
+ table{
+      border-spacing:0px; 
+      border-collapse: collapse;
+    }   
+    td{
+      box-sizing: border-box;
+      display: inline-grid;
+      place-items: center;
+       width:100px;
+      height:100px; 
+      background:blue;
+      font-weight:bold; 
+      font-size: 4em;
+      cursor:pointer;
+      user-select: none; 
+      margin:2px;
+      }
+    td:hover{
+      background: silver;
+    }
+     button{
+      margin: 1em 0;
+      font-size:2em;
+      padding: 0.25em 1em;
+      font-weight:bold; 
+     } 
+    
+  </style>
+</head>
+<body>
+  <h1>TicTacToe</h1>
+  <table id=board></table>
+  <button>new Game</button>
+   <dialog id=dialog>
+    <h2 id=winner></h2>
+    <form method="dialog">
+      <button>OK</button>
+    </form>
+  </dialog> 
+  <script>
+    var player = "X"
+    const clearBoard = () => board.innerHTML = '<tr><td><td><td>'.repeat(3)
+    clearBoard()
+    board.onclick = (el, cell=el.target) => {
+      if (cell.tagName == 'TD' && cell.innerText == ''){
+        cell.innerText = player
+        cell.style.background = "silver"
+        let vert = diaglr = diagrl = ''  
+        for (let i=0; i<3; i++){
+          let row = board.rows[i].cells
+          vert += row[cell.cellIndex].textContent
+          diaglr += row[i].textContent
+          diagrl += row[2-i].textContent
+        }
+        if ([cell.parentNode.textContent, vert, diaglr, diagrl].includes(player.repeat(3))){
+          winner.textContent=`Winner player ${player}`
+          dialog.showModal()
+        } else {
+          if(board.textContent.length==9){
+            winner.textContent="The game ends in a tie"
+            dialog.showModal()
+          }
+        }
+        player = player === 'X' ? 'O' : 'X'
+      } 
+    }
+    document.querySelector('button').addEventListener('click', () => 
+    clearBoard());
+
+  </script>
+</body>
+</html>
